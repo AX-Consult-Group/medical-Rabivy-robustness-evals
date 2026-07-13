@@ -51,6 +51,19 @@ source("R/03_drift_metrics.R")        # builds the PSI / drift-metrics harness
 
 ---
 
+### Evaluation Framework
+
+For each of the 3 models × 3 states, the models are evaluated using the same multi-metric harness as the original project, plus drift-specific metrics:
+
+- **Discrimination**: AUC and Gini coefficient, vs. the original golden-test-set baseline.
+- **Balanced performance**: Balanced Accuracy, Sensitivity, and Specificity at the original 0.5 threshold.
+- **Precision**: The proportion of HCPs predicted as likely to prescribe who actually were.
+- **Calibration**: Brier Score and calibration plots (predicted vs. observed rates) 
+- **Population Stability Index (PSI)**: Per shifted feature, per state, vs. the original training population 
+- **Feature importance stability**: XGBoost SHAP values and MLP permutation importance, compared to the original ranking via Spearman rank correlation.
+
+---
+
 ### How to view the report
 
 The full rendered report is available via **GitHub Pages**: 
