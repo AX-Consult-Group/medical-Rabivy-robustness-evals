@@ -40,9 +40,13 @@ Each state simulation is its own independent 5,000-HCP population. Sample sizes 
 
 This evaluation is a small pipeline of R scripts, each producing frozen artifacts the next stage consumes. Nothing downstream of `00_load_frozen_models.R` ever trains or refits anything (i.e., the models are frozen once and only ever scored against new data). 
 
-```
-utils_state_params.R  →  00_load_frozen_models.R  →  01_simulate_state_data.R  →  02_score_states.R  →  03_drift_metrics.R  →  report.qmd
-   (state config)          (freeze the models)         (simulate 3 states)         (score frozen models)     (PSI, deltas, SHAP)      
+Scripts must be run in order as each stage depends on frozen artifacts written by the previous one:
+
+```r
+source("R/00_load_frozen_models.R")   # trains + freezes the 3 models once
+source("R/01_simulate_state_data.R")  # simulates Nebraska, Wisconsin, Mississippi
+source("R/02_score_states.R")         # scores the frozen models against all 3 states
+source("R/03_drift_metrics.R")        # builds the PSI / drift-metrics harness
 ```
 
 ---
@@ -51,7 +55,7 @@ utils_state_params.R  →  00_load_frozen_models.R  →  01_simulate_state_data.
 
 The full rendered report is available via **GitHub Pages**: 
 
-xxx
+https://ax-consult-group.github.io/medical-Rabivy-AI-ML-post-training-evals/ 
 
 ---
 
