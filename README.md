@@ -40,6 +40,13 @@ Each state simulation is its own independent 5,000-HCP population. Sample sizes 
 
 This evaluation is a small pipeline of R scripts, each producing frozen artifacts the next stage consumes. Nothing downstream of `00_load_frozen_models.R` ever trains or refits anything (i.e., the models are frozen once and only ever scored against new data). 
 
+1. **`R/utils_state_params.R`** — One configuration object per state (Nebraska, Wisconsin, Mississippi), plus a `baseline_params` object reproducing the original repo's assumptions. 
+2. **`R/00_load_frozen_models.R`** — Rebuilds the three models (Logistic Regression, XGBoost, MLP) using the original repo's exact training code, features, and seeds, then freezes them. Also derives and saves the original population's centering/scaling constants, so state data is later standardized on the *original* scale rather than its own. This script is the only place any training/fitting happens in the whole project.
+3. **`R/01_simulate_state_data.R`** — Simulates the three state populations. Reuses the original repo's ground-truth DGP function and per-variable simulation code unchanged; only the covariates flagged for each state (per `utils_state_params.R`) are drawn from shifted distributions. Standardizes against the frozen constants from step 2, then applies the unchanged DGP formula to generate each state's true "likely to prescribe" labels.
+4. **`R/02_score_states.R`** — Loads the frozen models from step 2 and scores them against all three simulated state datasets from step 3. Computes AUC, Gini, Brier score, balanced accuracy, sensitivity, specificity, precision, and confusion matrices at the original decision threshold, for all 9 model × state combinations.
+5. **`R/03_drift_metrics.R`** — Builds the full drift-evaluation harness on top of the scored results. 
+6. **`report.qmd`** — The final Quarto report which reads only the frozen artifacts produced above. 
+
 Scripts must be run in order as each stage depends on frozen artifacts written by the previous one:
 
 ```r
