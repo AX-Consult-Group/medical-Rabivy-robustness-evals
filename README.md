@@ -77,7 +77,7 @@ For each of the 3 models × 3 states, the models are evaluated using the same mu
 
 The full rendered report is available via **GitHub Pages**: 
 
-https://ax-consult-group.github.io/medical-Rabivy-AI-ML-post-training-evals/ 
+https://ax-consult-group.github.io/medical-Rabivy-robustness-evals/
 
 ---
 
