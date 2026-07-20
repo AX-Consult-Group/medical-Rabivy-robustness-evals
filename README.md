@@ -1,4 +1,4 @@
-# Rabivy: AI-ML Post-Training Evals
+# Medical Rabivy Robustness Evals
 
 ![Infographic: Design Overview](infographic.png) 
 
@@ -17,6 +17,8 @@ A central concern in applied machine learning is that model performance is close
 ---
 
 ### Core Design Decision: Covariate Shift, Not Concept Drift
+
+A covariate-shift robustness evaluation of three frozen classifiers (LR, XGBoost, MLP) predicting HCP prescribing propensity. The data-generating process is held fixed and only covariate distributions shift by state — isolating transportability under covariate shift from concept drift, which real external validation confounds.
 
 The ground-truth data-generating process (DGP) - the coefficients and logic relating features to prescribing probability - is identical to the original. Only the *distribution* of input features changes, per state. This isolates a clean question: does the model generalize to a differently-shaped population, given that the underlying logic hasn't changed? 
 
